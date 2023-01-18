@@ -64,6 +64,20 @@ tfidf.99
 # Creating a data frame with words and binary artist as columns
 corpus_with_response <- data.frame(cbind(song[,"Artist"], beat_rs_final))
 
+# train and test datasets ---- 
+set.seed(123)
+split_obj <-rsample::initial_split(corpus_with_response, 
+                                   strata = song....Artist.., 
+                                   prop   = 0.75)
+
+train <- rsample::training(split_obj) %>% 
+    mutate(song....Artist..=as.factor(song....Artist..))
+
+test <- rsample::testing(split_obj) %>% 
+mutate(song....Artist..=as.factor(song....Artist..))
+
+glimpse(train)
+
 # Logistic model
 logistic_model <- glm(corpus_with_response$song....Artist.. ~., data = corpus_with_response)
 summary(logistic_model)
